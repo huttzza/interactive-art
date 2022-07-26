@@ -1,1 +1,1 @@
-# interactive-coding
+# interactive-art
