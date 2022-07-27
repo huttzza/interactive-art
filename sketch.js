@@ -64,7 +64,7 @@ function requestAccess() {
 }
 
 function draw() {
-    frameRate(10);
+    frameRate(16);
 
     if (!permissionGranted || !drawAllowed) return;
 
@@ -80,8 +80,8 @@ function draw() {
 
     const dx = constrain(rotationY, -3, 3); //범위 조정
     const dy = constrain(rotationX, -3, 3);
-    cx += dx * 2;
-    cy += dy * 2;
+    cx += dx * 3;
+    cy += dy * 3;
     cx = constrain(cx, 0, width);
     cy = constrain(cy, 0, height);
 
@@ -90,7 +90,7 @@ function draw() {
     fill('#5c5346');
     stroke('#A69F98');
     strokeWeight(2);
-    s.scribbleEllipse(cx, cy, 100, 100);
+    s.scribbleEllipse(cx, cy, 200, 200);
 
     const rot = rotRange[rotIdx];
 
