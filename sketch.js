@@ -1,12 +1,21 @@
 let permissionGranted = false;
+let drawAllowed = true;
 let cx, cy;
+let rotRange = [];
+let rotIdx;
 var r, g, b, a;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    s = new Scribble();
 
     cx = width / 2;
     cy = height / 2;
+
+    for (let i = 0; i <= 10; i++) {
+        rotRange[i] = i - 5;
+    }
+    rotIdx = 0;
 
     //check if it is ios
     if (typeof (DeviceOrientationEvent) !== 'undefined' &&
@@ -31,8 +40,9 @@ function setup() {
 
     } else {
         //it is NOT ios
-        textSize(40);
-        text("non ios device", 100, 100);
+        // textSize(40);
+        // text("non ios device", 100, 100);
+        permissionGranted = true;
     }
 
 
@@ -54,13 +64,11 @@ function requestAccess() {
 }
 
 function draw() {
+    frameRate(10);
 
-    if (!permissionGranted) return;
+    if (!permissionGranted || !drawAllowed) return;
 
-    //background(255);
-
-    // textSize(20);
-    // text(rotationX, 100, 100);
+    background(255);
 
     r = random(255); // r is a random number between 0 - 255
     g = random(100, 200); // g is a random number betwen 100 - 200
@@ -77,5 +85,43 @@ function draw() {
     cx = constrain(cx, 0, width);
     cy = constrain(cy, 0, height);
 
-    ellipse(cx, cy, 50, 50);
+    //ellipse(cx, cy, 50, 50);
+
+    fill('#5c5346');
+    stroke('#A69F98');
+    strokeWeight(2);
+    s.scribbleEllipse(cx, cy, 100, 100);
+
+    const rot = rotRange[rotIdx];
+
+    noFill();
+    s.scribbleLine(cx - 20, cy - 20,
+        cx + 20, cy + 20);
+    s.scribbleLine(cx + 20, cy - 20,
+        cx - 20, cy + 20);
+    // s.scribbleLine(cx - 20, cy - 20 + rot,
+    //     cx + 20, cy + 20 - rot);
+    // s.scribbleLine(cx + 20, cy - 20 - rot,
+    //     cx - 20, cy + 20 + rot);
+
+    rotIdx++;
+    if (rotIdx > 10) rotIdx = 0;
+}
+
+function keyPressed() {
+    if (drawAllowed) {
+        if (keyCode === LEFT_ARROW) {
+            cx -= 6;
+        } else if (keyCode === RIGHT_ARROW) {
+            cx += 6;
+        } else if (keyCode === UP_ARROW) {
+            cy -= 6;
+        } else if (keyCode === DOWN_ARROW) {
+            cy += 6;
+        }
+    }
+}
+
+function mousePressed() {
+    drawAllowed = !drawAllowed;
 }
