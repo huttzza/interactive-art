@@ -3,7 +3,7 @@ let drawAllowed = true;
 let cx, cy;
 let rotRange = [];
 let rotIdx;
-var r, g, b, a;
+var radius;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -16,6 +16,8 @@ function setup() {
         rotRange[i] = i - 5;
     }
     rotIdx = 0;
+
+    radius = 100;
 
     //check if it is ios
     if (typeof (DeviceOrientationEvent) !== 'undefined' &&
@@ -36,7 +38,7 @@ function setup() {
             .then(() => {
                 //on any subsequent visits
                 permissionGranted = true;
-            })
+            });
 
     } else {
         //it is NOT ios
@@ -68,29 +70,30 @@ function draw() {
 
     if (!permissionGranted || !drawAllowed) return;
 
-    background(255);
+    background('#AFD5AA');
 
-    r = random(255); // r is a random number between 0 - 255
-    g = random(100, 200); // g is a random number betwen 100 - 200
-    b = random(100); // b is a random number between 0 - 100
-    a = random(200, 255); // a is a random number between 200 - 255
+    //drawing grass background
+    for (let i = 0; i < 1000; i++) {
+        let x = random(width);
+        let y = random(height);
+        stroke(41, random(150, 200), 0);
+        strokeWeight(1);
+        fill(random(255), random(255), random(255));
+        line(x, y, x + random(50), y + random(50));
+    }
 
-    noStroke();
-    fill(r, g, b, a);
 
     const dx = constrain(rotationY, -3, 3); //범위 조정
     const dy = constrain(rotationX, -3, 3);
     cx += dx * 3;
     cy += dy * 3;
-    cx = constrain(cx, 0, width);
-    cy = constrain(cy, 0, height);
-
-    //ellipse(cx, cy, 50, 50);
+    cx = constrain(cx, 0 + radius, width - radius);
+    cy = constrain(cy, 0 + radius, height - radius);
 
     fill('#5c5346');
     stroke('#A69F98');
     strokeWeight(2);
-    s.scribbleEllipse(cx, cy, 200, 200);
+    s.scribbleEllipse(cx, cy, radius * 2, radius * 2);
 
     const rot = rotRange[rotIdx];
 
@@ -99,10 +102,6 @@ function draw() {
         cx + 20, cy + 20);
     s.scribbleLine(cx + 20, cy - 20,
         cx - 20, cy + 20);
-    // s.scribbleLine(cx - 20, cy - 20 + rot,
-    //     cx + 20, cy + 20 - rot);
-    // s.scribbleLine(cx + 20, cy - 20 - rot,
-    //     cx - 20, cy + 20 + rot);
 
     rotIdx++;
     if (rotIdx > 10) rotIdx = 0;
@@ -120,8 +119,4 @@ function keyPressed() {
             cy += 6;
         }
     }
-}
-
-function mousePressed() {
-    drawAllowed = !drawAllowed;
 }
