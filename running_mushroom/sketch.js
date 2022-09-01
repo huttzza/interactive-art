@@ -1,8 +1,6 @@
 let permissionGranted = false;
 let drawAllowed = true;
 let cx, cy;
-let rotRange = [];
-let rotIdx;
 var radius;
 
 function setup() {
@@ -11,11 +9,6 @@ function setup() {
 
     cx = width / 2;
     cy = height / 2;
-
-    for (let i = 0; i <= 10; i++) {
-        rotRange[i] = i - 5;
-    }
-    rotIdx = 0;
 
     radius = 100;
 
@@ -95,16 +88,11 @@ function draw() {
     strokeWeight(2);
     s.scribbleEllipse(cx, cy, radius * 2, radius * 2);
 
-    const rot = rotRange[rotIdx];
-
     noFill();
     s.scribbleLine(cx - 20, cy - 20,
         cx + 20, cy + 20);
     s.scribbleLine(cx + 20, cy - 20,
         cx - 20, cy + 20);
-
-    rotIdx++;
-    if (rotIdx > 10) rotIdx = 0;
 }
 
 function keyPressed() {
