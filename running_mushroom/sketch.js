@@ -108,3 +108,7 @@ function keyPressed() {
         }
     }
 }
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
